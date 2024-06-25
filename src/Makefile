@@ -10,7 +10,7 @@ ifneq ($(OS), Darwin)
 	GCOV_FLAG =
 endif
 
-all: $(LIB_NAME) test gcov_report
+all: $(LIB_NAME)
 
 $(LIB_NAME):
 	g++ $(BUILD_FLAGS) --coverage -c $(SOURCES)
