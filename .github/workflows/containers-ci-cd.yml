@@ -14,7 +14,8 @@ jobs:
       - name: Setup complier
         uses: rlalik/setup-cpp-compiler@master
         with:
-          compiler: [g++-11, clang++-11]
+          matrix:
+            compiler: [ g++-11, clang++-11 ]
       - name: Build static library
         run: make containers.a
 
