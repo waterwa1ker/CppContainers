@@ -1,0 +1,8 @@
+PROJECT_NAME = "Containers"
+PROJECT_NUMBER = 0.1
+PROJECT_BRIEF = "Containers implementation using C++"
+OUTPUT_DIRECTORY = documentation
+INPUT = . include
+FILE_PATTERNS = *.cc *.h
+GENERATE_LATEX = NO
+RECURSIVE = YES
