@@ -16,6 +16,7 @@ jobs:
         with:
             compiler: latest
       - name: Build static library
-        run: cd src
-        run: make containers.a
+        run: |
+          cd src
+          make containers.a
 
