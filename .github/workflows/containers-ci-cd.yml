@@ -20,3 +20,15 @@ jobs:
           cd src
           make containers.a
 
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Style check
+        uses: jidicula/clang-format-action@v4.11.0
+        with:
+          clang-format-version: '11'
+          check-path: 'src'
+          clang-format-style-path: 'Google'
+
