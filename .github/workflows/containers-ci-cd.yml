@@ -21,6 +21,7 @@ jobs:
           make containers.a
 
   style:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,5 +31,5 @@ jobs:
         with:
           clang-format-version: '11'
           check-path: 'src'
-          clang-format-style-path: 'Google'
+          fallback-style: 'Google'
 
