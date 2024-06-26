@@ -62,6 +62,28 @@ class AvlTree {
     return result;
   }
 
+  // TEST IT
+  void Swap(AvlTree<T> *first, AvlTree<T> *second) {
+    T tmp_key = first->key_;
+    first->key_ = second->key_;
+    second->key_ = tmp_key;
+    T tmp_value = first->value_;
+    first->value_ = second->value_;
+    second->value_ = tmp_value;
+  }
+
+  // TEST IT
+  void RotateRight(AvlTree<T> *tree) {
+    Swap(tree, tree->left_);
+    AvlTree<T> *tmp = tree->right_;
+    tree->right_ = tree->left_;
+    tree->left_ = tree->right_->left_;
+    tree->right_->left_ = tree->right_->right_;
+    tree->right_->right_ = tmp;
+    UpdateHeight(tree->right_);
+    UpdateHeight(tree);
+  }
+
   // �������, �������
   T GetKey() { return key_; }
   T GetValue() { return value_; }
