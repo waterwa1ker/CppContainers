@@ -4,7 +4,7 @@ SOURCES = $(wildcard containers/*/*.cc)
 OS = $(shell uname)
 GCOV_FLAG = --no-external
 LIB_NAME = containers.a
-TEST_SOURCE = test/tree/NodeTest.cc
+TEST_SOURCE = test/tree/AvlTreeTest.cc
 
 ifneq ($(OS), Darwin)
 	TEST_FLAGS = -lgtest -lgcov -pthread -lm -lrt
