@@ -4,6 +4,7 @@ SOURCES = $(wildcard containers/*/*.cc)
 OS = $(shell uname)
 GCOV_FLAG = --no-external
 LIB_NAME = containers.a
+TEST_SOURCE = test/tree/NodeTest.cc
 
 ifneq ($(OS), Darwin)
 	TEST_FLAGS = -lgtest -lgcov -pthread -lm -lrt
@@ -17,7 +18,7 @@ $(LIB_NAME):
 	ar rcs $(LIB_NAME) *.o
 
 test: $(LIB_NAME)
-	g++ $(BUILD_FLAGS) -g test/tree/NodeTest.cc $(TEST_FLAGS) $(LIB_NAME) -o tests
+	g++ $(BUILD_FLAGS) -g $(TEST_SOURCE) $(TEST_FLAGS) $(LIB_NAME) -o tests
 	./tests
 
 gcov_report: test
@@ -25,7 +26,11 @@ gcov_report: test
 	genhtml -o report/ gcov_test.info
 	open ./report/index.html
 
+dvi:
+	doxygen
+	open documentation/html/index.html
+
 clean:
-	rm -rf *.o *.a *.gcda *.gcno report tests gcov_test.info
+	rm -rf *.o *.a *.gcda *.gcno report tests gcov_test.info documentation
 
 rebuild: clean all

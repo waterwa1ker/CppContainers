@@ -3,6 +3,8 @@
 
 #define DEFAULT_INT_VALUE 0
 
+#include <stdio.h>
+
 //пюгаепхяэ, онвелс ме онксвюеряъ днаюбхрэ пеюкхгюжхч б .cc ТЮИК
 namespace s21 {
     template<typename T>
@@ -16,12 +18,7 @@ namespace s21 {
 
             //Destructor
             ~Node() {
-                if (left_ != nullptr) {
-                    delete left_;
-                }
-                if (right_ != nullptr) {
-                    delete right_;
-                }                    
+                FreeNode();             
             };
 
             //Getters & Setters
@@ -47,6 +44,45 @@ namespace s21 {
                         this->Insert(node->GetRight(), key, value);
                     }
                 }
+            }
+
+            Node<T>* GetMax(Node<T> &node) {
+                if (node.right_ == nullptr) {
+                    return &node;
+                }
+                return GetMax(*node.right_);
+            }
+
+            Node<T>* GetMin(Node<T> &node) {
+                if (node.left_ == nullptr) {
+                    return &node;
+                }
+                return GetMin(*node.left_);
+            }
+
+
+            //Operators
+            bool operator==(const Node& other) {
+                return this->key_ == other.key_ && this->value_ == other.value_;
+            }
+
+            Node<T> operator=(const Node& other) {
+                FreeNode();
+                key_ = other.key_;
+                value_ = other.value_;
+                left_ = other.left_;
+                right_ = other.right_;
+                return *this;
+            }
+
+            //Support
+            void FreeNode() {
+                if (left_ != nullptr) {
+                    delete left_;
+                }
+                if (right_ != nullptr) {
+                    delete right_;
+                }  
             }
 
         private:

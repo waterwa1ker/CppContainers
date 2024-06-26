@@ -1,0 +1,35 @@
+name: Containers-ci-cd
+
+on:
+  push:
+    branches:
+      - 'develop**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup complier
+        uses: rlalik/setup-cpp-compiler@master
+        with:
+            compiler: latest
+      - name: Build static library
+        run: |
+          cd src
+          make containers.a
+
+  style:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Style check
+        uses: jidicula/clang-format-action@v4.11.0
+        with:
+          clang-format-version: '11'
+          check-path: 'src'
+          fallback-style: 'Google'
+
