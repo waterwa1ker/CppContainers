@@ -8,11 +8,11 @@ namespace s21 {
 template <typename T>
 class AvlTree {
  public:
-  // Конструкторы
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   AvlTree(T key, T value)
       : key_(key), value_(value), left_(nullptr), right_(nullptr) {}
 
-  // Ребалансировка
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   int GetHeight(AvlTree<T> *tree) {
     return tree == nullptr ? -1 : tree->height_;
   }
@@ -25,7 +25,7 @@ class AvlTree {
                              : GetHeight(tree->right_) - GetHeight(tree->left_);
   }
 
-  // Вставка
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   void Insert(AvlTree<T> *tree, T key, T value) {
     if (key < tree->key_) {
       if (tree->left_ == nullptr) {
@@ -48,7 +48,21 @@ class AvlTree {
     }
   }
 
-  // Геттеры, сеттеры
+  AvlTree<T> *Search(AvlTree<T> *tree, T key) {
+    AvlTree<T> *result = nullptr;
+    if (tree != nullptr) {
+      if (tree->key_ == key) {
+        result = tree;
+      } else if (tree->key_ > key) {
+        tree->Search(tree->left_, key);
+      } else {
+        tree->Search(tree->right_, key);
+      }
+    }
+    return result;
+  }
+
+  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
   T GetKey() { return key_; }
   T GetValue() { return value_; }
   AvlTree<T> *GetLeft() { return left_; }

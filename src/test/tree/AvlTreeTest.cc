@@ -58,6 +58,20 @@ TEST(AvlTree, UpdateHeight) {
   EXPECT_EQ(root.GetHeight(&root), root_expected_height);
 }
 
+// TEST(AvlTree, Search) {
+//   int key = 1;
+//   int value = 2;
+//   int right_key = 3;
+//   int right_value = 4;
+//   int left_key = 0;
+//   int left_value = 5;
+//   s21::AvlTree<int> right(right_key, right_value);
+//   s21::AvlTree<int> root(key, value);
+//   root.Insert(&root, right_key, right_value);
+//   root.Insert(&root, left_key, left_value);
+//   EXPECT_TRUE(root.Search(&root, right_key) == nullptr);
+// }
+
 int main() {
   ::testing::InitGoogleTest();
   return RUN_ALL_TESTS();
