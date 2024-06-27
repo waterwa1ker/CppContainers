@@ -44,7 +44,7 @@ TEST(AvlTree, Insert) {
 }
 
 TEST(AvlTree, UpdateHeight) {
-  int root_expected_height = 2;
+  int root_expected_height = 1;
   int root_key = 1;
   int root_value = 2;
   int right_key = 2;
@@ -54,9 +54,23 @@ TEST(AvlTree, UpdateHeight) {
   s21::AvlTree<int> root(root_key, root_value);
   root.Insert(&root, right_key, right_value);
   root.Insert(&root, list_key, list_value);
-  root.UpdateHeight(&root);
   EXPECT_EQ(root.GetHeight(&root), root_expected_height);
 }
+
+TEST(AvlTree, Swap) {
+    int first_key = 1;
+    int first_value = 2;
+    int second_key = 3;
+    int second_value = 4;
+    s21::AvlTree<int> first(first_key, first_value);
+    s21::AvlTree<int> second(second_key, second_value);
+    first.Swap(&first, &second);
+    EXPECT_EQ(first.GetKey(), second_key);
+    EXPECT_EQ(first.GetValue(), second_value);
+    EXPECT_EQ(second.GetKey(), first_key);
+    EXPECT_EQ(second.GetValue(), first_value);
+}
+
 
 // TEST(AvlTree, Search) {
 //   int key = 1;

@@ -8,11 +8,9 @@ namespace s21 {
 template <typename T>
 class AvlTree {
  public:
-  // ������������
   AvlTree(T key, T value)
       : key_(key), value_(value), left_(nullptr), right_(nullptr) {}
 
-  // ��������������
   int GetHeight(AvlTree<T> *tree) {
     return tree == nullptr ? -1 : tree->height_;
   }
@@ -25,14 +23,27 @@ class AvlTree {
                              : GetHeight(tree->right_) - GetHeight(tree->left_);
   }
 
-  // �������
+  void Balance(AvlTree<T> *tree) {
+    int balance = GetBalance(tree);
+    if (balance == -2) {
+      if (GetBalance(tree->left_) == 1) {
+        RotateLeft(tree->left_);
+      }
+      RotateRight(tree);
+    } else if (balance == 2) {
+      if (GetBalance(tree->right_) == -1) {
+        RotateRight(tree->right_);
+      }
+      RotateLeft(tree);
+    }
+  }
+
   void Insert(AvlTree<T> *tree, T key, T value) {
     if (key < tree->key_) {
       if (tree->left_ == nullptr) {
         AvlTree<T> *new_tree = new AvlTree(key, value);
         new_tree->UpdateHeight(new_tree);
         tree->left_ = new_tree;
-        tree->UpdateHeight(tree);
       } else {
         this->Insert(tree->left_, key, value);
       }
@@ -41,11 +52,12 @@ class AvlTree {
         AvlTree<T> *new_tree = new AvlTree(key, value);
         new_tree->UpdateHeight(new_tree);
         tree->right_ = new_tree;
-        tree->UpdateHeight(tree);
       } else {
         this->Insert(tree->right_, key, value);
       }
     }
+    UpdateHeight(tree);
+    Balance(tree);
   }
 
   AvlTree<T> *Search(AvlTree<T> *tree, T key) {
@@ -62,7 +74,6 @@ class AvlTree {
     return result;
   }
 
-  // TEST IT
   void Swap(AvlTree<T> *first, AvlTree<T> *second) {
     T tmp_key = first->key_;
     first->key_ = second->key_;
@@ -83,6 +94,28 @@ class AvlTree {
     UpdateHeight(tree->right_);
     UpdateHeight(tree);
   }
+
+  void RotateLeft(AvlTree<T> *tree) {
+    Swap(tree, tree->right_);
+    AvlTree<T> *tmp = tree->left_;
+    tree->left_ = tree->right_;
+    tree->right_ = tree->left_->right_;
+    tree->left_->right_ = tree->left_->left_;
+    tree->left_->left_ = tmp;
+    UpdateHeight(tree->left_);
+    UpdateHeight(tree);
+  }
+
+  void PrintTree(AvlTree<T> *tree) {
+    if (tree != nullptr) {
+      PrintTree(tree->left_);
+      std::cout << tree->value_ << " ";
+      PrintTree(tree->right_);
+    }
+  }
+
+  // TODO
+  AvlTree<T> *Remove(AvlTree<T> *tree, T key) { return nullptr; }
 
   // �������, �������
   T GetKey() { return key_; }
