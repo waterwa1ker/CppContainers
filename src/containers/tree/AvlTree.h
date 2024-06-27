@@ -106,7 +106,7 @@ class AvlTree {
     UpdateHeight(tree);
   }
 
-  void PrintTree(AvlTree<T> *tree) {
+  void PrintTreeRight(AvlTree<T> *tree) {
     if (tree != nullptr) {
       PrintTree(tree->left_);
       std::cout << tree->value_ << " ";
@@ -114,8 +114,36 @@ class AvlTree {
     }
   }
 
+  AvlTree<T> *GetMax(AvlTree<T> *tree) {
+    AvlTree<T> *result = nullptr;
+    if (tree != nullptr) {
+      if (tree->right_ != nullptr) {
+        result = GetMax(tree->right_);
+      } else {
+        result = tree;
+      }
+    }
+    return result;
+  }
+
+  AvlTree<T> *GetMin(AvlTree<T> *tree) {
+    AvlTree<T> *result = nullptr;
+    if (tree != nullptr) {
+      if (tree->left_ != nullptr) {
+        result = GetMin(tree->left_);
+      } else {
+        result = tree;
+      }
+    }
+    return result;
+  }
+
   // TODO
   AvlTree<T> *Remove(AvlTree<T> *tree, T key) { return nullptr; }
+
+  bool operator==(const AvlTree<T> &other) {
+    return key_ == other.key_ && value_ == other.value_;
+  }
 
   // �������, �������
   T GetKey() { return key_; }

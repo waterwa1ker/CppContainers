@@ -2,7 +2,7 @@
 
 #include "../../containers/tree/AvlTree.h"
 
-TEST(AvlTree, ConstructorWithParametrs) {
+TEST(AvlTree, ConstructorWithParameters) {
   int key = 1;
   int value = 2;
   s21::AvlTree<int> tree(key, value);
@@ -69,6 +69,44 @@ TEST(AvlTree, Swap) {
   EXPECT_EQ(first.GetValue(), second_value);
   EXPECT_EQ(second.GetKey(), first_key);
   EXPECT_EQ(second.GetValue(), first_value);
+}
+
+TEST(AvlTree, GetMax) {
+  int root_key = 1;
+  int root_value = 2;
+  int right_key = 2;
+  int right_value = 3;
+  int list_key = 3;
+  int list_value = 4;
+  s21::AvlTree<int> root(root_key, root_value);
+  root.Insert(&root, right_key, right_value);
+  root.Insert(&root, list_key, list_value);
+  s21::AvlTree<int> expected_tree(list_key, list_value);
+  EXPECT_TRUE(*root.GetMax(&root) == expected_tree);
+}
+
+TEST(AvlTree, GetMin) {
+  int root_key = 1;
+  int root_value = 2;
+  int right_key = 2;
+  int right_value = 3;
+  int list_key = 3;
+  int list_value = 4;
+  s21::AvlTree<int> root(root_key, root_value);
+  root.Insert(&root, right_key, right_value);
+  root.Insert(&root, list_key, list_value);
+  s21::AvlTree<int> expected_tree(root_key, root_value);
+  EXPECT_TRUE(*root.GetMin(&root) == expected_tree);
+}
+
+TEST(AvlTree, GetMaxNull) {
+  s21::AvlTree<int> *root = nullptr;
+  EXPECT_EQ(root->GetMax(root), nullptr);
+}
+
+TEST(AvlTree, GetMinNull) {
+  s21::AvlTree<int> *root = nullptr;
+  EXPECT_EQ(root->GetMin(root), nullptr);
 }
 
 // TEST(AvlTree, Search) {
