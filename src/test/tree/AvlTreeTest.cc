@@ -58,19 +58,18 @@ TEST(AvlTree, UpdateHeight) {
 }
 
 TEST(AvlTree, Swap) {
-    int first_key = 1;
-    int first_value = 2;
-    int second_key = 3;
-    int second_value = 4;
-    s21::AvlTree<int> first(first_key, first_value);
-    s21::AvlTree<int> second(second_key, second_value);
-    first.Swap(&first, &second);
-    EXPECT_EQ(first.GetKey(), second_key);
-    EXPECT_EQ(first.GetValue(), second_value);
-    EXPECT_EQ(second.GetKey(), first_key);
-    EXPECT_EQ(second.GetValue(), first_value);
+  int first_key = 1;
+  int first_value = 2;
+  int second_key = 3;
+  int second_value = 4;
+  s21::AvlTree<int> first(first_key, first_value);
+  s21::AvlTree<int> second(second_key, second_value);
+  first.Swap(&first, &second);
+  EXPECT_EQ(first.GetKey(), second_key);
+  EXPECT_EQ(first.GetValue(), second_value);
+  EXPECT_EQ(second.GetKey(), first_key);
+  EXPECT_EQ(second.GetValue(), first_value);
 }
-
 
 // TEST(AvlTree, Search) {
 //   int key = 1;
