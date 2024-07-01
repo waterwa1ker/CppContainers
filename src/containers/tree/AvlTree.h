@@ -8,8 +8,6 @@ namespace s21 {
 template <typename T>
 class AvlTree {
  public:
-  class TreeIterator;
-
   AvlTree(T key, T value)
       : key_(key), value_(value), left_(nullptr), right_(nullptr) {}
 
@@ -147,33 +145,11 @@ class AvlTree {
     return key_ == other.key_ && value_ == other.value_;
   }
 
-  // �������, �������
+  // Getters & Setters
   T GetKey() { return key_; }
   T GetValue() { return value_; }
   AvlTree<T> *GetLeft() { return left_; }
   AvlTree<T> *GetRight() { return right_; }
-
-  // TEST
-  class TreeIterator {
-   public:
-    TreeIterator(T *first) : current_(first) {}
-
-    T &operator+(int n) { return *(current_ + n); }
-    T &operator-(int n) { return *(current_ - n); }
-
-    T &operator++() { return *current_++; }
-    T &operator--() { return *current_--; }
-
-    bool operator!=(const TreeIterator &other) {
-      return current_ != other.current_;
-    }
-    bool operator==(const TreeIterator &other) {
-      return current_ == other.current_;
-    }
-
-   private:
-    T *current_;
-  };
 
  private:
   T key_;
