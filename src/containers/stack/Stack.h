@@ -11,7 +11,7 @@ class Stack {
  public:
   using value_type = T;
   using reference = T&;
-  using const_referense = const T&;
+  using const_reference = const T&;
   using size_type = std::size_t;
 
   Stack() : size_(0), capacity_(INITIAL_CAPACITY) {
@@ -19,7 +19,7 @@ class Stack {
   }
 
   void push(value_type value) {
-    if (size == capacity_) {
+    if (size_ == capacity_) {
       capacity_ *= 2;
       value_type* new_data = new value_type[capacity_];
       CopyData(new_data);
@@ -29,14 +29,14 @@ class Stack {
     data_[size_++] = value;
   }
 
-  value_type pop() {
+  void pop() {
     if (size_ == 0) {
       throw std::out_of_range("Stack is empty");
     }
     --size_;
   }
 
-  const_referense top() {
+  const_reference top() {
     if (size_ == 0) {
       throw std::out_of_range("Stack is empty");
     }
@@ -63,7 +63,7 @@ class Stack {
 
  private:
   void CopyData(value_type* new_data) {
-    for (size_type i = 0; i < size; ++i) {
+    for (size_type i = 0; i < size_; ++i) {
       new_data[i] = data_[i];
     }
   }
