@@ -8,6 +8,34 @@ TEST(Stack, Constructor) {
   EXPECT_EQ(stack.GetCapacity(), INITIAL_CAPACITY);
 }
 
+TEST(Stack, InitializerListConstructor) {
+  s21::Stack<int> stack = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+  EXPECT_EQ(stack.size(), 11);
+  EXPECT_EQ(stack.GetCapacity(), 20);
+}
+
+TEST(Stack, CopyConstructor) {
+  int value = 1;
+  s21::Stack<int> old_stack;
+  old_stack.push(value);
+  s21::Stack<int> new_stack(old_stack);
+  EXPECT_EQ(new_stack.size(), 1);
+  EXPECT_EQ(new_stack.GetData()[0], value);
+}
+
+TEST(Stack, MoveConstructor) {
+  s21::Stack<int> move_stack;
+  move_stack.push(1);
+  s21::Stack<int> stack(std::move(move_stack));
+  EXPECT_EQ(stack.size(), 1);
+}
+
+// TEST(Stack, AssignmentOperator) {
+//     s21::Stack<int> stack = {1, 2, 3, 4, 5};
+//     s21::Stack<int> new_stack = stack;
+//     EXPECT_EQ(new_stack.size(), 5);
+// }
+
 TEST(Stack, Push) {
   s21::Stack<float> stack;
   stack.push(1.2);

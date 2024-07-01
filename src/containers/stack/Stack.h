@@ -18,6 +18,48 @@ class Stack {
     data_ = new value_type[capacity_];
   }
 
+  Stack(std::initializer_list<value_type> const& items)
+      : size_(0), capacity_(INITIAL_CAPACITY) {
+    data_ = new value_type[capacity_];
+    for (auto i = items.begin(); i != items.end(); i++) {
+      push(*i);
+    }
+  }
+
+  Stack(const Stack& s) : size_(s.size_), capacity_(s.capacity_) {
+    CopyData(s.data_);
+  }
+
+  Stack(Stack&& s) : size_(s.size_), capacity_(s.capacity_) {
+    CopyData(s.data_);
+    s.size_ = 0;
+    s.capacity_ = 0;
+    s.data_ = nullptr;
+  }
+
+  ~Stack() {
+    if (data_) {
+      delete[] data_;
+    }
+  }
+
+  // ВНИМАТЕЛЬНЕЕ С ЭТИМ МЕТОДОМ
+  Stack operator=(Stack&& s) {
+    if (data_) {
+      delete data_;
+    }
+    size_ = s.size_;
+    capacity_ = s.capacity_;
+    data_ = new value_type[size_];
+    for (size_type i = 0; i < size_; ++i) {
+      data_[i] = s.data_[i];
+    }
+    s.size_ = 0;
+    s.data_ = nullptr;
+    s.capacity_ = 0;
+    return *this;
+  }
+
   void push(value_type value) {
     if (size_ == capacity_) {
       capacity_ *= 2;
@@ -58,11 +100,21 @@ class Stack {
   bool empty() { return size_ == 0; }
 
   size_type size() { return size_; }
-
   size_type GetCapacity() { return capacity_; }
+  value_type* GetData() { return data_; }
 
  private:
-  void CopyData(value_type* new_data) {
+  void CopyData(value_type* old_data) {
+    if (data_) {
+      delete[] data_;
+    }
+    data_ = new value_type[size_];
+    for (size_type i = 0; i < size_; ++i) {
+      data_[i] = old_data[i];
+    }
+  }
+
+  void CopyToNewData(value_type* new_data) {
     for (size_type i = 0; i < size_; ++i) {
       new_data[i] = data_[i];
     }
