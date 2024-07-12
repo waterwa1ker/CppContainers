@@ -7,6 +7,7 @@
 #ifndef CPP2_S21_CONTAINERS_1_LIST_LIST_H_
 #define CPP2_S21_CONTAINERS_1_LIST_LIST_H_
 
+#include <algorithm>
 #include <iostream>
 
 namespace s21 {
@@ -18,15 +19,8 @@ namespace s21 {
 template <typename T>
 class list {
  public:
-  template <typename T>
-  class ListIterator {
-   public:
-    ListIterator();
-    ~ListIterator();
-
-   private:
-    node *ptr_node;
-  }
+  class ListIterator;
+  struct node;
 
   /** @brief T defines the type of an element (T is template parameter) */
   using value_type = T;
@@ -37,17 +31,37 @@ class list {
   /**  @brief internal class ListConstIterator<T> defines the constant type for
    * iterating through the container
    */
-  using const_iterator;
+  using const_iterator = const ListIterator;
   /** @brief internal class ListIterator<T> defines the type for iterating
    * through the container
    */
-  using iterator;
+  using iterator = ListIterator;
   /** @brief size_t defines the type of the container size (standard type is
    * size_t)
    */
   using size_type = std::size_t;
-  /** @brief  constructor, creates empty list */
 
+  class ListIterator {
+   public:
+    ListIterator();
+    ~ListIterator();
+
+    // overlaods operators
+    ListIterator &operator++();
+    ListIterator &operator--();
+    value_type operator*();
+
+    bool operator==(const ListIterator &) const;
+
+    bool operator!=(const ListIterator &) const;
+
+    node *getNode();
+
+   private:
+    node *ptr_node_;
+  };
+
+  /** @brief  constructor, creates empty list */
   list();
   /** @brief parameterized constructor, creates the list of size n */
   list(size_type n);
@@ -61,7 +75,7 @@ class list {
   /** @brief destructor */
   ~list();
   /** @brief assignment operator overload for moving object */
-  operator=(list && l);
+  // operator=(list && l);
 
   /** @brief access the first element */
   const_reference front();
@@ -109,18 +123,16 @@ class list {
   void sort();
 
  private:
-  struct node {
-    value_type value_;
-    node *next_node_;
-  };
+  node *node_head_;
+  node *node_tail_;
 
-  node *node_head;
-  node *node_tail;
+  node *getHead();
 
   /** @brief keep size of list */
   size_type size_;
 };
-
 }  // namespace s21
+
+#include "list.cc"
 
 #endif /** CPP2_S21_CONTAINERS_1_LIST_LIST_H_ */
