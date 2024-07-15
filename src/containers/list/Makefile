@@ -2,12 +2,10 @@
 
 all: format run
 
-t: 
-	g++ -Wall -Werror -Wextra -std=c++20 main.cc
-	./a.out
-
-run:
+build:
 	g++ -Wall -Werror -Wextra -std=c++20 list.cc main.cc
+
+run: build
 	./a.out
 
 format:
@@ -16,6 +14,13 @@ format:
 dvi:
 	doxygen
 	open documentation/html/index.html
+
+docker: ../../docker
+	sh ../../docker/run.sh
+
+valgrind: clean build
+	clear
+	valgrind --tool=memcheck --leak-check=yes ./a.out
 
 clean:
 	rm -rf documentation

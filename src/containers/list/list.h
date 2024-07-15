@@ -44,6 +44,7 @@ class list {
   class ListIterator {
    public:
     ListIterator();
+    ListIterator(node *);
     ~ListIterator();
 
     // overlaods operators
@@ -127,6 +128,7 @@ class list {
   node *node_tail_;
 
   node *getHead();
+  node *getTail();
 
   /** @brief keep size of list */
   size_type size_;
