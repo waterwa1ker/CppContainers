@@ -52,7 +52,29 @@ s21::list<T>::~list() {
     delete tmp->next_;
   }
   delete tmp;
-  std::cout << "hello";  // add in new versions)
+  std::cout << "\nDESTRUCTOR\n";  // add in new versions)
+}
+
+// Access
+
+template <class T>
+const T &s21::list<T>::front() {
+  return (this->node_head_->value_);
+}
+
+template <class T>
+const T &s21::list<T>::back() {
+  return this->node_tail_->prev_->value_;
+}
+
+template <class T>
+bool s21::list<T>::empty() {
+  return size_ == 0;
+}
+
+template <class T>
+size_t s21::list<T>::size() {
+  return this->size_;
 }
 
 template <class T>
