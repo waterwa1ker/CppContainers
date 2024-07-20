@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <iostream>
-#include <list>
+// #include <list>
 
 #include "./list.h"
 
@@ -10,19 +10,21 @@ s21::list<int> funs() {
 }
 
 int main() {
-  s21::list<int> val{1, 2, 3, 4};
+  s21::list<int> val{1, 3, 4};
+
+  val.push_front(0);
 
   for (auto a : val) {
     std::cout << a << " ";
   }
 
-  val.clear();
+  // std::list<int> sval{1, 2, 3};
 
-  for (auto a : val) {
-    std::cout << a << " ";
-  }
+  // sval.pop_back();
 
-  std::cout << val.size();
+  // for (auto a : sval) {
+  //   std::cout << a << " ";
+  // }
 
   return 0;
 }

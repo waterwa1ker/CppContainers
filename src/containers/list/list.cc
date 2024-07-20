@@ -125,7 +125,7 @@ void s21::list<T>::clear() {
 }
 
 template <class T>
-void s21::list<T>::push_front(const T &value) {
+void s21::list<T>::push_back(const T &value) {
   if (this->size_ == 0) {
     this->node_head_ = new node;
     node_head_->value_ = value;
@@ -141,6 +141,42 @@ void s21::list<T>::push_front(const T &value) {
     node_tail_ = tmp->next_;
     tmp->value_ = value;
     size_ += 1;
+  }
+}
+
+template <class T>
+void s21::list<T>::pop_back() {
+  if (size_ == 0) return;
+  node *tmp = node_tail_;
+  tmp = tmp->prev_;
+  delete tmp->next_;
+  node_tail_ = tmp;
+  size_ -= 1;
+}
+
+template <class T>
+void s21::list<T>::push_front(const T &value) {
+  if (size_ == 0) {
+    this->push_back(value);
+  } else {
+    node *tmp = node_head_;
+    node_head_ = new node;
+    node_head_->next_ = tmp;
+    tmp->prev_ = node_head_;
+    node_head_->value_ = value;
+    size_ += 1;
+  }
+}
+
+template <class T>
+void s21::list<T>::pop_front() {
+  if (size_ == 0)
+    return;
+  else {
+    this->node_head_ = node_head_->next_;
+    delete node_head_->prev_;
+    node_head_->prev_ = nullptr;
+    this->size_ -= 1;
   }
 }
 
