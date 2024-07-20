@@ -76,7 +76,7 @@ class list {
   /** @brief destructor */
   ~list();
   /** @brief assignment operator overload for moving object */
-  // operator=(list && l);
+  bool operator=(list &&l);
 
   /** @brief access the first element */
   const_reference front();
