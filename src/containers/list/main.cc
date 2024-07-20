@@ -10,21 +10,18 @@ s21::list<int> funs() {
 }
 
 int main() {
-  s21::list<int> val{1, 3, 4};
+  s21::list<int> val1{1, 2, 3};
+  s21::list<int> val2{4, 5, 6, 7};
 
-  val.push_front(0);
+  val1.swap(val2);
+  val1.swap(val1);
 
-  for (auto a : val) {
+  for (auto a : val1) {
     std::cout << a << " ";
   }
-
-  // std::list<int> sval{1, 2, 3};
-
-  // sval.pop_back();
-
-  // for (auto a : sval) {
-  //   std::cout << a << " ";
-  // }
-
+  std::cout << "\n";
+  for (auto a : val2) {
+    std::cout << a << " ";
+  }
   return 0;
 }

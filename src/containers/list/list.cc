@@ -180,6 +180,23 @@ void s21::list<T>::pop_front() {
   }
 }
 
+template <class T>
+void s21::list<T>::swap(s21::list<T> &other) {
+  if (this == &other) return;
+
+  size_type tmp_size = this->size_;
+  this->size_ = other.size_;
+  other.size_ = tmp_size;
+
+  node *tmp = this->node_head_;
+  this->node_head_ = other.node_head_;
+  other.node_head_ = tmp;
+
+  tmp = this->node_tail_;
+  this->node_tail_ = other.node_tail_;
+  other.node_tail_ = tmp;
+}
+
 // Конструкторы и деструкторы внутреннего класса Iterator
 
 template <class T>
