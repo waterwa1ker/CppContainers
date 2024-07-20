@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <iostream>
-// #include <list>
+#include <list>
 
 #include "./list.h"
 
@@ -10,31 +10,19 @@ s21::list<int> funs() {
 }
 
 int main() {
-  s21::list<int> slist{1, 2, 3};
+  s21::list<int> val{1, 2, 3, 4};
 
-  s21::list<int> copy;
-
-  copy = funs();
-
-  // std::cout << "OWN LIST\n";
-  for (auto a : copy) {
+  for (auto a : val) {
     std::cout << a << " ";
   }
 
-  // std::cout << std::endl
-  //           << slist.front() << std::endl
-  //           << slist.back() << std::endl;
+  val.clear();
 
-  // std::cout << "LIST\n";
-  // std::list<int> list{1, 2, 3, 4};
+  for (auto a : val) {
+    std::cout << a << " ";
+  }
 
-  // for (auto a : list) {
-  //   std::cout << a << " ";
-  // }
-
-  // std::cout << std::endl
-  //           << list.front() << std::endl
-  //           << list.back() << std::endl;
+  std::cout << val.size();
 
   return 0;
 }

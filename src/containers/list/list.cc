@@ -78,13 +78,7 @@ bool s21::list<T>::operator=(s21::list<T> &&l) {
 
 template <class T>
 s21::list<T>::~list() {
-  if (this->size_ == 0) return;
-  node *tmp = this->node_tail_;
-  for (size_type i = size_; i > 0; --i) {
-    tmp = tmp->prev_;
-    delete tmp->next_;
-  }
-  delete tmp;
+  this->clear();
 }
 
 // Access
@@ -112,6 +106,22 @@ size_t s21::list<T>::size() {
 template <class T>
 s21::list<T>::node *s21::list<T>::getHead() {
   return this->node_head_;
+}
+
+// another
+
+template <class T>
+void s21::list<T>::clear() {
+  if (this->size_ == 0) return;
+  node *tmp = this->node_tail_;
+  for (size_type i = size_; i > 0; --i) {
+    tmp = tmp->prev_;
+    delete tmp->next_;
+  }
+  delete tmp;
+  this->node_head_ = nullptr;
+  this->node_tail_ = nullptr;
+  this->size_ = 0;
 }
 
 template <class T>
