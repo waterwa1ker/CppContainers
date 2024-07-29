@@ -197,6 +197,30 @@ void s21::list<T>::swap(s21::list<T> &other) {
   other.node_tail_ = tmp;
 }
 
+template <class T>
+void s21::list<T>::sort() {
+  node *tmp = this->node_head_;
+  for (size_t n = 0; n < this->size_ - 1; ++n) {
+    node *nod = tmp;
+    for (size_t i = 0; i < this->size_ - 1 - n; ++i) {
+      node *point = nod;
+      node *point_next = nod->next_;
+      if (point->value_ > point_next->value_) {
+        T val = point->value_;
+        point->value_ = point_next->value_;
+        point_next->value_ = val;
+      }
+      nod = nod->next_;
+    }
+  }
+}
+
+template <class T>
+void s21::list<T>::unique() {}
+
+template <class T>
+void s21::list<T>::reverse() {}
+
 // Конструкторы и деструкторы внутреннего класса Iterator
 
 template <class T>
