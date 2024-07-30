@@ -125,6 +125,34 @@ void s21::list<T>::clear() {
 }
 
 template <class T>
+void s21::list<T>::erase(s21::list<T>::iterator pos) {
+  if (this->size_ == 0 or pos == this->end()) {
+    return;  // add sega like this:
+    /*
+    a.out(15287,0x2025c4c00) malloc: *** error for object 0x16f21b040: pointer
+    being freed was not allocated
+    a.out(15287,0x2025c4c00) malloc: *** set a breakpoint in malloc_error_break
+    to debug
+    */
+  }
+
+  node *tmp = pos.getNode();
+  node *tmp_n = tmp->next_;
+  node *tmp_p = tmp->prev_;
+  if (tmp->prev_ == nullptr) {
+    this->node_head_ = tmp_n;
+    this->node_head_->prev_ = nullptr;
+  } else {
+    tmp_p->next_ = tmp_n;
+    tmp_n->prev_ = tmp_p;
+    tmp->next_ = nullptr;
+    tmp->prev_ = nullptr;
+  }
+  delete tmp;
+  this->size_ -= 1;
+}
+
+template <class T>
 void s21::list<T>::push_back(const T &value) {
   if (this->size_ == 0) {
     this->node_head_ = new node;
