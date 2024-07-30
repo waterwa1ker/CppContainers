@@ -124,6 +124,10 @@ void s21::list<T>::clear() {
   this->size_ = 0;
 }
 
+// Осталось 4 метода
+
+// template<class T> size_t s21::list<T>::max_size()
+
 // template <class T>
 // s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
 //                                             const T &value) {
