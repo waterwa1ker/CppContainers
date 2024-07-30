@@ -199,6 +199,9 @@ void s21::list<T>::swap(s21::list<T> &other) {
 
 template <class T>
 void s21::list<T>::sort() {
+  if (size_ == 0 or size_ == 1) {
+    return;
+  }
   node *tmp = this->node_head_;
   for (size_type n = 0; n < this->size_ - 1; ++n) {
     node *nod = tmp;
@@ -217,7 +220,9 @@ void s21::list<T>::sort() {
 
 template <class T>
 void s21::list<T>::unique() {
-  if (size_ == 0) return;
+  if (size_ == 0) {
+    return;
+  }
   node *tmp = this->node_head_;
   node *check = this->node_head_->next_;
   size_type s = this->size_;

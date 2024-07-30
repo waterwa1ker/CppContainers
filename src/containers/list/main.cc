@@ -10,8 +10,8 @@
 // }
 
 int main() {
-  s21::list<int> val1{};
-  std::list<int> val2{};
+  s21::list<int> val1;
+  std::list<int> val2;
 
   // val.sort();
   for (auto a : val1) {
