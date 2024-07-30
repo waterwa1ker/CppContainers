@@ -130,7 +130,6 @@ void s21::list<T>::clear() {
 //   node* tmp = pos.getNode();
 // }
 
-
 // Заёбисто сортирует :( прийдётся писать ещё один сортировщик(
 // template <class T>
 // void s21::list<T>::merge(s21::list<T> &other) {}
