@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <iostream>
-// #include <list>
+#include <list>
 
 #include "./list.h"
 
@@ -10,14 +10,21 @@
 // }
 
 int main() {
-  s21::list<int> val{1, 5, -3, 2, 0, 34, 0, 4, 5};
-  std::cout << "Before: ";
-  for (auto a : val) {
+  s21::list<int> val1{};
+  std::list<int> val2{};
+
+  // val.sort();
+  for (auto a : val1) {
     std::cout << a << " ";
   }
-  val.sort();
-  std::cout << std::endl << "After: ";
-  for (auto a : val) {
+  val1.unique();
+  std::cout << std::endl << "S21\n";
+  for (auto a : val1) {
+    std::cout << a << " ";
+  }
+  val2.unique();
+  std::cout << "std:\n";
+  for (auto a : val2) {
     std::cout << a << " ";
   }
   return 0;

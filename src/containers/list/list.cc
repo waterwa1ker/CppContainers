@@ -200,9 +200,9 @@ void s21::list<T>::swap(s21::list<T> &other) {
 template <class T>
 void s21::list<T>::sort() {
   node *tmp = this->node_head_;
-  for (size_t n = 0; n < this->size_ - 1; ++n) {
+  for (size_type n = 0; n < this->size_ - 1; ++n) {
     node *nod = tmp;
-    for (size_t i = 0; i < this->size_ - 1 - n; ++i) {
+    for (size_type i = 0; i < this->size_ - 1 - n; ++i) {
       node *point = nod;
       node *point_next = nod->next_;
       if (point->value_ > point_next->value_) {
@@ -216,10 +216,45 @@ void s21::list<T>::sort() {
 }
 
 template <class T>
-void s21::list<T>::unique() {}
+void s21::list<T>::unique() {
+  if (size_ == 0) return;
+  node *tmp = this->node_head_;
+  node *check = this->node_head_->next_;
+  size_type s = this->size_;
+  for (size_type i = 0; i < s; ++i) {
+    if (tmp->value_ == check->value_) {
+      node *point_n = check->next_;
+      node *point_p = check->prev_;
+      check->next_ = nullptr;
+      check->prev_ = nullptr;
+      delete check;
+      check = point_n;
+      point_p->next_ = point_n;
+      point_n->prev_ = point_p;
+      this->size_ -= 1;
+      if (check == nullptr or tmp == nullptr) break;
+    } else {
+      tmp = tmp->next_;
+      check = tmp->next_;
+    }
+  }
+}
 
 template <class T>
-void s21::list<T>::reverse() {}
+void s21::list<T>::reverse() {
+  size_type part_s = this->size_ / 2;
+  node *tmp_h = this->node_head_;
+  node *tmp_t = this->node_tail_->prev_;
+
+  for (size_type i = 0; i < part_s; ++i) {
+    T val = tmp_h->value_;
+    tmp_h->value_ = tmp_t->value_;
+    tmp_t->value_ = val;
+
+    tmp_h = tmp_h->next_;
+    tmp_t = tmp_t->prev_;
+  }
+}
 
 // Конструкторы и деструкторы внутреннего класса Iterator
 
