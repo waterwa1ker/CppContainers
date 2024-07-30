@@ -124,6 +124,20 @@ void s21::list<T>::clear() {
   this->size_ = 0;
 }
 
+// template <class T>
+// s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
+//                                             const T &value) {
+//   node* tmp = pos.getNode();
+// }
+
+
+// Заёбисто сортирует :( прийдётся писать ещё один сортировщик(
+// template <class T>
+// void s21::list<T>::merge(s21::list<T> &other) {}
+
+// template<class T> void s21::list<T>::splice(s21::list<T>::iterator pos,
+// s21::list<T> &other)
+
 template <class T>
 void s21::list<T>::erase(s21::list<T>::iterator pos) {
   if (this->size_ == 0 or pos == this->end()) {

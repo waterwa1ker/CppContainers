@@ -10,10 +10,11 @@
 // }
 
 int main() {
-  std::list<int> val2{};
-  val2.erase(val2.end());
+  std::list<int> val1{5, 2, 4};
+  std::list<int> val2{2, 2, 4};
+  val1.merge(val2);
   std::cout << "std:\n";
-  for (auto a : val2) {
+  for (auto a : val1) {
     std::cout << a << " ";
   }
   return 0;
