@@ -158,8 +158,26 @@ s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
 
 // }
 
-// template<class T> void s21::list<T>::splice(s21::list<T>::iterator pos,
-// s21::list<T> &other)
+template <class T>
+void s21::list<T>::splice(s21::list<T>::iterator pos, s21::list<T> &other) {
+  node *pos_node = pos.getNode();
+  node *pos_pr = pos_node->prev_;
+
+  if (pos_pr != nullptr) {
+    pos_pr->next_ = other.node_head_;
+    other.node_head_->prev_ = pos_pr;
+  } else {
+    this->node_head_ = other.node_head_;
+  }
+
+  node *tmp = other.node_tail_->prev_;
+  tmp->next_ = pos_node;
+  pos_node->prev_ = other.node_tail_->prev_;
+  delete other.node_tail_;
+  other.size_ = 0;
+  other.node_head_ = nullptr;
+  other.node_tail_ = nullptr;
+}
 
 template <class T>
 void s21::list<T>::erase(s21::list<T>::iterator pos) {
@@ -377,7 +395,7 @@ s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator--() {
 }
 
 template <class T>
-s21::list<T>::node *s21::list<T>::ListIterator::getNode() {
+s21::list<T>::node *s21::list<T>::ListIterator::getNode() const {
   return ptr_node_;
 }
 template <class T>

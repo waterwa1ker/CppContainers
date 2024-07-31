@@ -56,7 +56,7 @@ class list {
 
     bool operator!=(const ListIterator &) const;
 
-    node *getNode();
+    node *getNode() const;
 
    private:
     node *ptr_node_;
