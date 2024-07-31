@@ -128,7 +128,7 @@ void s21::list<T>::clear() {
 
 template <class T>
 size_t s21::list<T>::max_size() {
-  return (std::numeric_limits<std::size_t>::max() / sizeof(node) / 2)
+  return (std::numeric_limits<std::size_t>::max() / sizeof(node) / 2);
 }
 
 template <class T>
