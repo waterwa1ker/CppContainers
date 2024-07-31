@@ -10,9 +10,10 @@
 // }
 
 int main() {
-  std::list<int> val1{5, 2, 4};
-  std::list<int> val2{2, 2, 4};
-  val1.merge(val2);
+  s21::list<int> val1{1, 4, 3};
+  // std::list<int> val2{4};
+  // val1.merge(val2);
+  val1.insert(val1.begin(), 8);
   std::cout << "std:\n";
   for (auto a : val1) {
     std::cout << a << " ";

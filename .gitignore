@@ -1,3 +1,4 @@
+*.gcno
 .DS_Store
 main
 .vscode

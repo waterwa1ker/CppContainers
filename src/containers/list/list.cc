@@ -128,15 +128,31 @@ void s21::list<T>::clear() {
 
 // template<class T> size_t s21::list<T>::max_size()
 
-// template <class T>
-// s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
-//                                             const T &value) {
-//   node* tmp = pos.getNode();
-// }
+template <class T>
+s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
+                                            const T &value) {
+  node *tmp = pos.getNode();
+  node *tmp_p = tmp->prev_;
+  node *new_node = new node;
+  new_node->next_ = tmp;
+  new_node->prev_ = tmp_p;
+  tmp->prev_ = new_node;
+  tmp_p->next_ = new_node;
+  new_node->value_ = value;
+  this->size_ += 1;
+  return iterator(new_node);
+}
 
 // Заёбисто сортирует :( прийдётся писать ещё один сортировщик(
+// как работает сортировка в данном случае он сравнивает 1 элемент this с первым
+// элементом в other и так далее
+// this.value <= other.value and other.value != this.next.value если это не так
+// то в конец добавляется
 // template <class T>
-// void s21::list<T>::merge(s21::list<T> &other) {}
+// void s21::list<T>::merge(s21::list<T> &other) {
+//   if (other->size_ == 0) return;
+
+// }
 
 // template<class T> void s21::list<T>::splice(s21::list<T>::iterator pos,
 // s21::list<T> &other)
@@ -339,7 +355,6 @@ template <class T>
 s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator--() {
   // проверить как ведёт себя если это конечная нода
   if (ptr_node_->prev_ != nullptr) ptr_node_ = ptr_node_->prev_;
-
   return *this;
 }
 

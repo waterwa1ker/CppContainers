@@ -1,6 +1,6 @@
 
 
-all: format run
+all: run
 
 build:
 	g++ -Wall -Werror -Wextra -std=c++20 list.cc main.cc
