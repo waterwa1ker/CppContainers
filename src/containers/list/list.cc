@@ -136,8 +136,12 @@ s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
   node *new_node = new node;
   new_node->next_ = tmp;
   new_node->prev_ = tmp_p;
+  if (tmp_p != nullptr) {
+    tmp_p->next_ = new_node;
+  } else {
+    this->node_head_ = new_node;
+  }
   tmp->prev_ = new_node;
-  tmp_p->next_ = new_node;
   new_node->value_ = value;
   this->size_ += 1;
   return iterator(new_node);
@@ -347,14 +351,28 @@ T s21::list<T>::ListIterator::operator*() {
 template <class T>
 s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator++() {
   // проверить как ведёт себя если это конечная нода
-  if (ptr_node_->next_ != nullptr) ptr_node_ = ptr_node_->next_;
+  if (ptr_node_->next_ != nullptr) {
+    ptr_node_ = ptr_node_->next_;
+  } else {
+    while (true) {
+      if (ptr_node_->prev_ == nullptr) break;
+      ptr_node_ = ptr_node_->prev_;
+    }
+  }
   return *this;
 }
 
 template <class T>
 s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator--() {
   // проверить как ведёт себя если это конечная нода
-  if (ptr_node_->prev_ != nullptr) ptr_node_ = ptr_node_->prev_;
+  if (ptr_node_->prev_ != nullptr) {
+    ptr_node_ = ptr_node_->prev_;
+  } else {
+    while (true) {
+      if (ptr_node_->next_ == nullptr) break;
+      ptr_node_ = ptr_node_->next_;
+    }
+  }
   return *this;
 }
 

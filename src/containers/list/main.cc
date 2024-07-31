@@ -11,10 +11,15 @@
 
 int main() {
   s21::list<int> val1{1, 4, 3};
-  // std::list<int> val2{4};
+  std::list<int> val2{1, 4, 3};
   // val1.merge(val2);
-  val1.insert(val1.begin(), 8);
+  val1.insert(--(--val1.begin()), 8);
+  val2.insert(--(--val2.begin()), 8);
   std::cout << "std:\n";
+  for (auto a : val2) {
+    std::cout << a << " ";
+  }
+  std::cout << "\ns21:\n";
   for (auto a : val1) {
     std::cout << a << " ";
   }
