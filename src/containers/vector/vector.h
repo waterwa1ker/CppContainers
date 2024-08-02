@@ -8,9 +8,7 @@
 namespace s21 {
 
 template <typename T>
-class vector {
-    
-}
+class vector {}
 }  // namespace s21
 
 #include "vector.cc"

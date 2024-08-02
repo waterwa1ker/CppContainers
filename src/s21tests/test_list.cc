@@ -1,8 +1,8 @@
-#include "../containers/list/list.h"
-
 #include <gtest/gtest.h>
 
 #include <list>
+
+#include "../containers/list/list.h"
 
 TEST(S21ListConstructs, Default) {
   s21::list<int> l;
