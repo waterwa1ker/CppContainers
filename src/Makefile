@@ -19,7 +19,7 @@ $(LIB_NAME):
 	ar rcs $(LIB_NAME) *.o
 
 test: $(LIB_NAME)
-	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) tests/list_test.cc  $(TEST_FLAGS) $(LIB_NAME) -o tests
+	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) s21tests/list_test.cc  $(TEST_FLAGS) $(LIB_NAME) -o tests
 	./tests
 
 dvi:
