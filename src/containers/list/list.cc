@@ -155,28 +155,71 @@ s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
 // элементом в other и так далее
 // this.value <= other.value and other.value != this.next.value если это не так
 // то в конец добавляется
-// template <class T>
-// void s21::list<T>::merge(s21::list<T> &other) {
-//   if (other->size_ == 0) return;
+template <class T>
+void s21::list<T>::merge(s21::list<T> &other) {
+  if (other.size_ == 0) return;
+  if (this->size_ == 0) {
+    this->splice(this->begin(), other);
+    return;
+  }
+  node *tmp_this_node = this->node_head_;
+  node *tmp_other_node = other.node_head_;
+  for (size_type n = 0; n < this->size_ and other.size_ != 0; ++n) {
+    if (tmp_other_node->value_ <= tmp_this_node->value_ and
+        tmp_other_node->next_ != nullptr) {
+      node *tmp_other_next = tmp_other_node->next_;
 
-// }
+      if (tmp_this_node->prev_ == nullptr) {
+        tmp_this_node->prev_ = tmp_other_node;
+        tmp_other_node->next_ = tmp_this_node;
+        tmp_other_node->prev_ = nullptr;
+        this->node_head_ = tmp_other_node;
+      } else {
+        node *tmp_this_p = tmp_this_node->prev_;
+        tmp_this_node->prev_ = tmp_other_node;
+        tmp_other_node->next_ = tmp_this_node;
+        tmp_other_node->prev_ = tmp_this_p;
+        tmp_this_p->next_ = tmp_other_node;
+      }
+
+      this->size_ += 1;
+      other.size_ -= 1;
+      tmp_other_node = tmp_other_next;
+      other.node_head_ = tmp_other_node;
+    } else {
+      tmp_this_node = tmp_this_node->next_;
+    }
+  }
+  this->splice(this->end(), other);
+  other.node_head_ = nullptr;
+  delete other.node_tail_;
+  other.node_tail_ = nullptr;
+  other.size_ = 0;
+}
 
 template <class T>
 void s21::list<T>::splice(s21::list<T>::iterator pos, s21::list<T> &other) {
   node *pos_node = pos.getNode();
-  node *pos_pr = pos_node->prev_;
-
-  if (pos_pr != nullptr) {
-    pos_pr->next_ = other.node_head_;
-    other.node_head_->prev_ = pos_pr;
-  } else {
+  if (pos_node == this->node_head_ and pos_node == nullptr) {
     this->node_head_ = other.node_head_;
-  }
+    this->node_tail_ = other.node_tail_;
+    this->size_ = other.size_;
+  } else {
+    node *pos_pr = pos_node->prev_;
 
-  node *tmp = other.node_tail_->prev_;
-  tmp->next_ = pos_node;
-  pos_node->prev_ = other.node_tail_->prev_;
-  delete other.node_tail_;
+    if (pos_pr != nullptr) {
+      pos_pr->next_ = other.node_head_;
+      other.node_head_->prev_ = pos_pr;
+    } else {
+      this->node_head_ = other.node_head_;
+    }
+
+    node *tmp = other.node_tail_->prev_;
+    tmp->next_ = pos_node;
+    pos_node->prev_ = other.node_tail_->prev_;
+    delete other.node_tail_;
+    this->size_ += other.size_;
+  }
   other.size_ = 0;
   other.node_head_ = nullptr;
   other.node_tail_ = nullptr;

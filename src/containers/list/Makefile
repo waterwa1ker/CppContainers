@@ -28,3 +28,4 @@ valgrind: clean build
 
 clean:
 	rm -rf documentation
+	rm -rf a.out *.dSYM main
