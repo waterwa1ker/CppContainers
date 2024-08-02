@@ -33,3 +33,18 @@ jobs:
           check-path: 'src'
           fallback-style: 'Google'
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup complier
+        uses: rlalik/setup-cpp-compiler@master
+        with:
+            compiler: latest
+      - name: testing static lib
+        run: |
+          cd src
+          make test
+
+

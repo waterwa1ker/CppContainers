@@ -1,11 +1,10 @@
 BUILD_FLAGS = -Wall -Werror -Wextra -std=c++17
 TEST_FLAGS =  -lgtest -lgcov
 SOURCES = $(wildcard containers/*/*.cc)
+TEST_SOURCES = $(wildcard s21tests/*.cc)
 OS = $(shell uname)
 GCOV_FLAG = --no-external
 LIB_NAME = containers.a
-
-LIB_GTEST= $(wildcard gtest/lib/*.a)
 
 ifneq ($(OS), Darwin)
 	TEST_FLAGS = -lgtest -lgcov -pthread -lm -lrt
@@ -19,7 +18,7 @@ $(LIB_NAME):
 	ar rcs $(LIB_NAME) *.o
 
 test: $(LIB_NAME)
-	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) s21tests/list_test.cc  $(TEST_FLAGS) $(LIB_NAME) -o tests
+	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) $(LIB_NAME) $(TEST_SOURCES)  $(TEST_FLAGS) -o tests
 	./tests
 
 dvi:
