@@ -5,6 +5,8 @@ OS = $(shell uname)
 GCOV_FLAG = --no-external
 LIB_NAME = containers.a
 
+LIB_GTEST= $(wildcard gtest/lib/*.a)
+
 ifneq ($(OS), Darwin)
 	TEST_FLAGS = -lgtest -lgcov -pthread -lm -lrt
 	GCOV_FLAG =
@@ -17,7 +19,7 @@ $(LIB_NAME):
 	ar rcs $(LIB_NAME) *.o
 
 test: $(LIB_NAME)
-	g++ $(BUILD_FLAGS) -g tests/list_test.cc $(TEST_FLAGS) $(LIB_NAME) -o tests
+	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) tests/list_test.cc  $(TEST_FLAGS) $(LIB_NAME) -o tests
 	./tests
 
 dvi:
@@ -33,6 +35,6 @@ con:
 	sh docker/run.sh
 
 clean:
-	rm -rf *.o *.a *.gcda *.gcno report tests gcov_test.info documentation
+	rm -rf *.o *.a *.gcda *.gcno report gcov_test.info documentation
 
 rebuild: clean all
