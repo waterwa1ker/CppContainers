@@ -42,7 +42,7 @@ jobs:
       - name: Setup complier
         uses: rlalik/setup-cpp-compiler@master
       - name: Gtest
-        uses: nholthaus/gtest-runner@master
+        uses: ArhNex/dock_s21_for_testing@master
         with:
             compiler: latest
       - name: testing static lib
