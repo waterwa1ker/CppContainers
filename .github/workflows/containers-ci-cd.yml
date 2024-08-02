@@ -18,7 +18,7 @@ jobs:
       - name: Build static library
         run: |
           cd src
-          make build
+          make containers.a
 
   style:
     needs: [build]
@@ -34,6 +34,7 @@ jobs:
           fallback-style: 'Google'
 
   test:
+    needs: [style]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
