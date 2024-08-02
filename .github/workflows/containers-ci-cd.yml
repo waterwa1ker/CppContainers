@@ -43,12 +43,12 @@ jobs:
         uses: rlalik/setup-cpp-compiler@master
       - name: Gtest
         uses: ArhNex/dock_s21_for_testing@main
-        with:
-            compiler: latest
-      - name: testing static lib
         run: |
-
-          cd src
           make test
+      # - name: testing static lib
+      #   run: |
+
+      #     cd src
+      #     make test
 
 
