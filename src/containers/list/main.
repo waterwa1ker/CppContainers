@@ -1,8 +1,0 @@
-#include "list.h"
-
-int main() {
-  s21::list<int> val;
-  val.front();
-
-  return 0;
-}

@@ -31,6 +31,11 @@ gcov_report: test
 	genhtml -o report/ gcov_test.info
 	open ./report/index.html
 
+valgrind: clean test
+	clear
+	valgrind --tool=memcheck --leak-check=yes ./tests
+
+
 con:
 	sh docker/run.sh
 

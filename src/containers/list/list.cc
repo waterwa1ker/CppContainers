@@ -43,6 +43,7 @@ s21::list<T>::list(const std::initializer_list<T> &items) : list(items.size()) {
     tmp->value_ = item;
     tmp = tmp->next_;
   }
+  this->node_tail_->value_ = this->node_tail_->prev_->value_;
 }
 
 template <typename T>
@@ -287,6 +288,11 @@ void s21::list<T>::pop_back() {
   delete tmp->next_;
   node_tail_ = tmp;
   size_ -= 1;
+  if (size_ == 0) {
+    delete tmp;
+    this->node_tail_ = nullptr;
+    this->node_head_ = nullptr;
+  }
 }
 
 template <typename T>
@@ -305,13 +311,16 @@ void s21::list<T>::push_front(const T &value) {
 
 template <typename T>
 void s21::list<T>::pop_front() {
-  if (size_ == 0)
-    return;
-  else {
-    this->node_head_ = node_head_->next_;
-    delete node_head_->prev_;
-    node_head_->prev_ = nullptr;
-    this->size_ -= 1;
+  if (size_ == 0) return;
+
+  this->node_head_ = node_head_->next_;
+  delete node_head_->prev_;
+  node_head_->prev_ = nullptr;
+  this->size_ -= 1;
+  if (size_ == 0) {
+    delete this->node_head_;
+    this->node_tail_ = nullptr;
+    this->node_head_ = nullptr;
   }
 }
 
@@ -363,6 +372,7 @@ void s21::list<T>::unique() {
   size_type s = this->size_;
   for (size_type i = 0; i < s; ++i) {
     if (tmp->value_ == check->value_) {
+      if (check->next_ == nullptr) break;
       node *point_n = check->next_;
       node *point_p = check->prev_;
       check->next_ = nullptr;
