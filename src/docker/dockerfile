@@ -13,15 +13,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tz
 RUN apt-get -y update 
 
 # install some develop tools
-# RUN apt-get install -y make nano g++ gcc valgrind
+RUN apt-get install -y make nano g++ gcc valgrind check clang-format gcovr lcov
 
 #install zsh and oh-my-zsh
-# RUN apt-get install -y neofetch zsh curl
+RUN apt-get install -y neofetch zsh curl
 
-# RUN curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
-# RUN echo clear >> ~/.zshrc
-# RUN echo neofetch >> ~/.zshrc
-# RUN echo "alias sh='bash'" >> ~/.zshrc
+RUN apt-get install -y git 
+
+RUN curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+RUN echo clear >> ~/.zshrc
+RUN echo neofetch >> ~/.zshrc
+RUN echo "alias sh='bash'" >> ~/.zshrc
 
 RUN apt-get -y upgrade 
 RUN mkdir /project

@@ -2,7 +2,11 @@
 
 all: run
 
-test: 	
+
+test:
+	
+
+test1: 	
 	g++ -g -fsanitize=address -Wall -Werror -Wextra -std=c++20 list.cc main.cc
 	./a.out
 

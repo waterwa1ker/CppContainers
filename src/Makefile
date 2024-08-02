@@ -17,7 +17,7 @@ $(LIB_NAME):
 	ar rcs $(LIB_NAME) *.o
 
 test: $(LIB_NAME)
-	g++ $(BUILD_FLAGS) -g test/tree/NodeTest.cc $(TEST_FLAGS) $(LIB_NAME) -o tests
+	g++ $(BUILD_FLAGS) -g tests/list_test.cc $(TEST_FLAGS) $(LIB_NAME) -o tests
 	./tests
 
 dvi:
@@ -28,6 +28,9 @@ gcov_report: test
 	lcov -o gcov_test.info $(GCOV_FLAG) -c -d .
 	genhtml -o report/ gcov_test.info
 	open ./report/index.html
+
+con:
+	sh docker/run.sh
 
 clean:
 	rm -rf *.o *.a *.gcda *.gcno report tests gcov_test.info documentation

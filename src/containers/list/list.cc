@@ -4,7 +4,7 @@
 
 // Определение структуры
 
-template <class T>
+template <typename T>
 struct s21::list<T>::node {
   value_type value_;
   node *next_;
@@ -15,14 +15,14 @@ struct s21::list<T>::node {
 
 // Конструкторы
 
-template <class T>
+template <typename T>
 s21::list<T>::list() {
   node_head_ = nullptr;
   node_tail_ = nullptr;
   size_ = 0;
 }
 
-template <class T>
+template <typename T>
 s21::list<T>::list(size_type n) {
   node_head_ = new node;
   size_ = n;
@@ -36,7 +36,7 @@ s21::list<T>::list(size_type n) {
   node_tail_ = tmp;
 }
 
-template <class T>
+template <typename T>
 s21::list<T>::list(const std::initializer_list<T> &items) : list(items.size()) {
   node *tmp = node_head_;
   for (T item : items) {
@@ -45,7 +45,7 @@ s21::list<T>::list(const std::initializer_list<T> &items) : list(items.size()) {
   }
 }
 
-template <class T>
+template <typename T>
 s21::list<T>::list(const s21::list<T> &l) : list(l.size_) {
   node *tmp_this = this->node_head_;
   node *tmp_l = l.node_head_;
@@ -55,7 +55,7 @@ s21::list<T>::list(const s21::list<T> &l) : list(l.size_) {
     tmp_l = tmp_l->next_;
   }
 }
-template <class T>
+template <typename T>
 s21::list<T>::list(s21::list<T> &&l) {
   this->node_head_ = l.node_head_;
   this->node_tail_ = l.node_tail_;
@@ -65,7 +65,7 @@ s21::list<T>::list(s21::list<T> &&l) {
   l.size_ = 0;
 }
 
-template <class T>
+template <typename T>
 bool s21::list<T>::operator=(s21::list<T> &&l) {
   this->node_head_ = l.node_head_;
   this->node_tail_ = l.node_tail_;
@@ -76,41 +76,41 @@ bool s21::list<T>::operator=(s21::list<T> &&l) {
   return true;
 }
 
-template <class T>
+template <typename T>
 s21::list<T>::~list() {
   this->clear();
 }
 
 // Access
 
-template <class T>
+template <typename T>
 const T &s21::list<T>::front() {
   return (this->node_head_->value_);
 }
 
-template <class T>
+template <typename T>
 const T &s21::list<T>::back() {
   return this->node_tail_->prev_->value_;
 }
 
-template <class T>
+template <typename T>
 bool s21::list<T>::empty() {
   return size_ == 0;
 }
 
-template <class T>
+template <typename T>
 size_t s21::list<T>::size() {
   return this->size_;
 }
 
-template <class T>
-s21::list<T>::node *s21::list<T>::getHead() {
+template <typename T>
+typename s21::list<T>::node *s21::list<T>::getHead() {
   return this->node_head_;
 }
 
 // another
 
-template <class T>
+template <typename T>
 void s21::list<T>::clear() {
   if (this->size_ == 0) return;
   node *tmp = this->node_tail_;
@@ -126,14 +126,14 @@ void s21::list<T>::clear() {
 
 // Осталось 1 метода
 
-template <class T>
+template <typename T>
 size_t s21::list<T>::max_size() {
   return (std::numeric_limits<std::size_t>::max() / sizeof(node) / 2);
 }
 
-template <class T>
-s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
-                                            const T &value) {
+template <typename T>
+typename s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
+                                                     const T &value) {
   node *tmp = pos.getNode();
   node *tmp_p = tmp->prev_;
   node *new_node = new node;
@@ -155,7 +155,7 @@ s21::list<T>::iterator s21::list<T>::insert(s21::list<T>::iterator pos,
 // элементом в other и так далее
 // this.value <= other.value and other.value != this.next.value если это не так
 // то в конец добавляется
-template <class T>
+template <typename T>
 void s21::list<T>::merge(s21::list<T> &other) {
   if (other.size_ == 0) return;
   if (this->size_ == 0) {
@@ -197,7 +197,7 @@ void s21::list<T>::merge(s21::list<T> &other) {
   other.size_ = 0;
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::splice(s21::list<T>::iterator pos, s21::list<T> &other) {
   node *pos_node = pos.getNode();
   if (pos_node == this->node_head_ and pos_node == nullptr) {
@@ -225,7 +225,7 @@ void s21::list<T>::splice(s21::list<T>::iterator pos, s21::list<T> &other) {
   other.node_tail_ = nullptr;
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::erase(s21::list<T>::iterator pos) {
   if (this->size_ == 0 or pos == this->end()) {
     return;  // add sega like this:
@@ -253,7 +253,7 @@ void s21::list<T>::erase(s21::list<T>::iterator pos) {
   this->size_ -= 1;
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::push_back(const T &value) {
   if (this->size_ == 0) {
     this->node_head_ = new node;
@@ -273,7 +273,7 @@ void s21::list<T>::push_back(const T &value) {
   }
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::pop_back() {
   if (size_ == 0) return;
   node *tmp = node_tail_;
@@ -283,7 +283,7 @@ void s21::list<T>::pop_back() {
   size_ -= 1;
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::push_front(const T &value) {
   if (size_ == 0) {
     this->push_back(value);
@@ -297,7 +297,7 @@ void s21::list<T>::push_front(const T &value) {
   }
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::pop_front() {
   if (size_ == 0)
     return;
@@ -309,7 +309,7 @@ void s21::list<T>::pop_front() {
   }
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::swap(s21::list<T> &other) {
   if (this == &other) return;
 
@@ -326,7 +326,7 @@ void s21::list<T>::swap(s21::list<T> &other) {
   other.node_tail_ = tmp;
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::sort() {
   if (size_ == 0 or size_ == 1) {
     return;
@@ -347,7 +347,7 @@ void s21::list<T>::sort() {
   }
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::unique() {
   if (size_ == 0) {
     return;
@@ -374,7 +374,7 @@ void s21::list<T>::unique() {
   }
 }
 
-template <class T>
+template <typename T>
 void s21::list<T>::reverse() {
   size_type part_s = this->size_ / 2;
   node *tmp_h = this->node_head_;
@@ -392,28 +392,28 @@ void s21::list<T>::reverse() {
 
 // Конструкторы и деструкторы внутреннего класса Iterator
 
-template <class T>
+template <typename T>
 s21::list<T>::ListIterator::ListIterator() {
   ptr_node_ = nullptr;
 }
 
-template <class T>
+template <typename T>
 s21::list<T>::ListIterator::ListIterator(s21::list<T>::node *list_node) {
   ptr_node_ = list_node;
 }
 
-template <class T>
+template <typename T>
 s21::list<T>::ListIterator::~ListIterator() {
   ptr_node_ = nullptr;
 }
 
-template <class T>
+template <typename T>
 T s21::list<T>::ListIterator::operator*() {
   return ptr_node_->value_;
 }
 
-template <class T>
-s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator++() {
+template <typename T>
+typename s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator++() {
   // проверить как ведёт себя если это конечная нода
   if (ptr_node_->next_ != nullptr) {
     ptr_node_ = ptr_node_->next_;
@@ -426,8 +426,8 @@ s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator++() {
   return *this;
 }
 
-template <class T>
-s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator--() {
+template <typename T>
+typename s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator--() {
   // проверить как ведёт себя если это конечная нода
   if (ptr_node_->prev_ != nullptr) {
     ptr_node_ = ptr_node_->prev_;
@@ -440,34 +440,35 @@ s21::list<T>::ListIterator &s21::list<T>::ListIterator::operator--() {
   return *this;
 }
 
-template <class T>
-s21::list<T>::node *s21::list<T>::ListIterator::getNode() const {
+template <typename T>
+typename s21::list<T>::node *s21::list<T>::ListIterator::getNode() const {
   return ptr_node_;
 }
-template <class T>
-s21::list<T>::node *s21::list<T>::getTail() {
+
+template <typename T>
+typename s21::list<T>::node *s21::list<T>::getTail() {
   return this->node_tail_;
 }
 
-template <class T>
+template <typename T>
 bool s21::list<T>::ListIterator::operator==(
     const s21::list<T>::ListIterator &iter) const {
   return this->ptr_node_ == iter.ptr_node_;
 }
 
-template <class T>
+template <typename T>
 bool s21::list<T>::ListIterator::operator!=(
     const s21::list<T>::ListIterator &iter) const {
   return this->ptr_node_ != iter.ptr_node_;
 }
 
-template <class T>
-s21::list<T>::iterator s21::list<T>::begin() {
+template <typename T>
+typename s21::list<T>::iterator s21::list<T>::begin() {
   ListIterator iter(this->node_head_);
   return iter;
 }
-template <class T>
-s21::list<T>::iterator s21::list<T>::end() {
+template <typename T>
+typename s21::list<T>::iterator s21::list<T>::end() {
   ListIterator iter(this->node_tail_);
 
   return iter;
