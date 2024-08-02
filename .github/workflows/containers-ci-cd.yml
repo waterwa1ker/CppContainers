@@ -17,7 +17,7 @@ jobs:
             compiler: latest
       - name: Build static library
         run: |
-          cd src/containers/list
+          cd src
           make build
 
   style:

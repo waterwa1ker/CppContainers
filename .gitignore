@@ -1,3 +1,4 @@
+tests
 *.gcno
 .DS_Store
 main

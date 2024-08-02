@@ -66,7 +66,7 @@ s21::list<T>::list(s21::list<T> &&l) {
 }
 
 template <typename T>
-bool s21::list<T>::operator=(s21::list<T> &&l) {
+bool s21::list<T>::operator=(s21::list<T> &&l) noexcept {
   this->node_head_ = l.node_head_;
   this->node_tail_ = l.node_tail_;
   this->size_ = l.size_;
@@ -85,11 +85,17 @@ s21::list<T>::~list() {
 
 template <typename T>
 const T &s21::list<T>::front() {
+  if (this->size_ == 0) {
+    throw std::length_error("list::front called on empty list");
+  }
   return (this->node_head_->value_);
 }
 
 template <typename T>
 const T &s21::list<T>::back() {
+  if (this->size_ == 0) {
+    throw std::length_error("list::front called on empty list");
+  }
   return this->node_tail_->prev_->value_;
 }
 
