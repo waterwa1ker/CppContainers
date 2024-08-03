@@ -41,13 +41,12 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup complier
         uses: rlalik/setup-cpp-compiler@master
-      - name: Gtest
-        uses: ArhNex/dock_s21_for_testing@main
         with:
             compiler: latest
       - name: testing static lib
         run: |
           cd src
+          sh runner_gtest.sh
           make test
 
 
