@@ -39,6 +39,7 @@ jobs:
       - name: Get Google Test
         uses: LazyPanda07/get-gtest@v1.1
         with: |
+          cd src
           make test
 
 
