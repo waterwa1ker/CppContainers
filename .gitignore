@@ -1,4 +1,4 @@
-tests
+containers_tests
 *.gcno
 .DS_Store
 main

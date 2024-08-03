@@ -6,6 +6,8 @@ OS = $(shell uname)
 GCOV_FLAG = --no-external
 LIB_NAME = containers.a
 
+TEST_EXECUTE = containers_tests
+
 ifneq ($(OS), Darwin)
 	TEST_FLAGS = -lgtest -lgcov -pthread -lm -lrt
 	GCOV_FLAG =
@@ -18,8 +20,8 @@ $(LIB_NAME):
 	ar rcs $(LIB_NAME) *.o
 
 test: $(LIB_NAME)
-	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) $(LIB_NAME) $(TEST_SOURCES)  $(TEST_FLAGS) -o tests
-	./tests
+	g++ $(BUILD_FLAGS) -g $(LIB_GTEST) $(LIB_NAME) $(TEST_SOURCES)  $(TEST_FLAGS) -o $(TEST_EXECUTE)
+	./$(TEST_EXECUTE)
 
 dvi:
 	doxygen
@@ -32,13 +34,16 @@ gcov_report: test
 
 valgrind: clean test
 	clear
-	valgrind --tool=memcheck --leak-check=yes ./tests
+	valgrind --tool=memcheck --leak-check=yes ./$(TEST_EXECUTE)
 
 
 con:
 	sh docker/run.sh
 
+format:
+	clang-format -style=google -i $(TEST_SOURCES) $(SOURCES)
+
 clean:
-	rm -rf *.o *.a *.gcda *.gcno report gcov_test.info documentation
+	rm -rf *.o *.a *.gcda *.gcno report gcov_test.info documentation $(TEST_EXECUTE)
 
 rebuild: clean all
