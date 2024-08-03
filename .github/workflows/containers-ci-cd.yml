@@ -43,6 +43,8 @@ jobs:
         uses: rlalik/setup-cpp-compiler@master
         with:
             compiler: latest
+      - name: Setup gtest
+        uses: google/googletest@v1.8.x
       - name: testing static lib
         run: |
           cd src
