@@ -1,47 +1,51 @@
 #ifndef CPP2_S21_CONTAINERS_1_SET_SET_H_
 #define CPP2_S21_CONTAINERS_1_SET_SET_H_
+#include <math.h>
 
-#include "../virt_class/virt_class.h"
+#include <iostream>
+
+#include "../tree/tree.h"
 
 namespace s21 {
-
-template <typename T, typename S = T>
-class set : public virtual_map_set<T, S> {
+template <class T>
+class set : AVLTree<T, T> {
  public:
-  using key_type = T;
-  using value_type = std::pair<const T, T>;
-  using refernce = value_type &;
-  using const_reference = const value_type &;
-  using iterator = iterator_set<T, S>;
-  using const_iterator = const iterator_set<T, S>;
+  using value_type = T;
+  using reference = value_type&;
+  using const_reference = const value_type&;
   using size_type = size_t;
+  using iterator = typename AVLTree<value_type, T>::Iterator;
+  using const_iterator = typename AVLTree<value_type, T>::ConstIterator;
 
-  set() {};
-  set(std::initializer_list<key_type> const &items);
-  set(set &s);
-  set(set &&s);
-  ~set() { this->destroy(this->root_); };
-  set &operator=(set &s);
-  set &operator=(set &&s);
+  set();
+  set(std::initializer_list<value_type> const& items);
+  set(const set& s);
+  set(set&& s) = default;
+  ~set();
+  set<T>& operator=(set&& s);
 
   iterator begin();
   iterator end();
 
-  std::pair<iterator, bool> insert(const key_type &key);
+  bool empty();
+  size_type size();
+  size_type max_size();
+
+  void clear();
+  std::pair<iterator, bool> insert(const value_type& value);
   void erase(iterator pos);
+  void swap(set& other);
+  void merge(set& other);
 
-  void merge(set &other);
+  iterator find(const T& key);
+  bool contains(const T& key);
+  const AVLTree<T, T>& get_tree() const;
 
-  iterator find(const T &key);
-
-  template <typename... Args>
-  std::vector<std::pair<iterator, bool>> emplace(Args &&...args);
-
- protected:
-  std::pair<iterator, bool> push(node<T, S> *(&knot), std::pair<T, S> value);
-};  // set
+ private:
+  AVLTree<T, T> tree_;
+};
 }  // namespace s21
 
-#include "./set.cc"
+#include "set.cc"
 
 #endif  // CPP2_S21_CONTAINERS_1_SET_SET_H_

@@ -1,143 +1,126 @@
 
 #ifndef CPP2_S21_CONTAINERS_1_SET_SET_CC_
 #define CPP2_S21_CONTAINERS_1_SET_SET_CC_
+#include "set.h"
 
-#include "./set.h"
+namespace s21 {
 
-using namespace s21;
+template <typename T>
+set<T>::set() : AVLTree<T, T>::AVLTree() {}
 
-template <typename T, typename S>
-set<T, S>::set(std::initializer_list<key_type> const &items) {
-  for (auto it = items.begin(); it != items.end(); ++it) {
-    insert(*it);
+template <typename T>
+set<T>::set(std::initializer_list<typename set<T>::value_type> const& items)
+    : AVLTree<value_type, T>::AVLTree() {
+  for (auto i = items.begin(); i != items.end(); ++i) {
+    this->insert(*i);
   }
 }
 
-template <typename T, typename S>
-set<T, S>::set(set &s) {
-  for (auto it = s.begin(); it != s.end(); ++it) {
-    insert(*it);
-  }
-}
+template <typename T>
+set<T>::set(const set& s) : AVLTree<value_type, T>::AVLTree(s.tree_) {}
 
-template <typename T, typename S>
-set<T, S>::set(set &&s) {
-  this->clear();
-  this->root_ = s.root_;
-  s.root_ = nullptr;
-}
-
-template <typename T, typename S>
-set<T, S> &set<T, S>::operator=(set &s) {
-  for (iterator it = s.begin(); it != s.end(); ++it) {
-    insert(*it);
+template <typename T>
+set<T>& set<T>::operator=(set<T>&& s) {
+  if (this != &s) {
+    tree_ = std::move(s.tree_);
   }
   return *this;
 }
 
-template <typename T, typename S>
-set<T, S> &set<T, S>::operator=(set &&s) {
-  this->clear();
-  this->root_ = s.root_;
-  s.root_ = nullptr;
-  return *this;
+template <typename T>
+set<T>::~set() {}
+
+template <typename T>
+typename set<T>::iterator set<T>::begin() {
+  return AVLTree<T, T>::begin();
 }
 
-template <typename T, typename S>
-typename set<T, S>::iterator set<T, S>::begin() {
-  iterator it;
-  if (this->root_ == nullptr) {
-    it.elem = this->end_dummy;
+template <typename T>
+typename set<T>::iterator set<T>::end() {
+  return AVLTree<T, T>::end();
+}
+
+template <typename T>
+bool set<T>::empty() {
+  bool result = false;
+  if (AVLTree<T, T>::root_ == nullptr) {
+    result = true;
+  }
+  if (AVLTree<T, T>::root_ == 0) {
+    result = true;
+  }
+  return result;
+}
+
+template <typename T>
+typename set<T>::size_type set<T>::size() {
+  return (tree_.root_ != nullptr) ? tree_.root_->size_ : 0;
+}
+
+template <typename T>
+typename set<T>::size_type set<T>::max_size() {
+  return pow(2, (64 - log(sizeof(T)) / log(2))) - 1;
+}
+
+template <typename T>
+void set<T>::clear() {
+  if (this->tree_.get_root()) {
+    this->tree_.clear_node(this->tree_.get_root());
+    this->tree_.root_ = nullptr;
+  }
+}
+
+template <typename T>
+std::pair<typename set<T>::iterator, bool> set<T>::insert(const T& value) {
+  std::pair<typename set<T>::iterator, bool> result;
+  this->tree_.insert(value, value);
+  if (this->tree_.get_inserted()) {
+    result = std::pair<typename set<T>::iterator, bool>(find(value), true);
   } else {
-    it.elem = this->min_elem(this->root_);
+    result = std::pair<typename set<T>::iterator, bool>(find(value), false);
   }
-  return it;
+  return result;
 }
 
-template <typename T, typename S>
-typename set<T, S>::iterator set<T, S>::end() {
-  if (this->root_ != nullptr) {
-    node<T, S> *max = this->max_elem(this->root_);
-    if (max != this->end_dummy) {
-      this->end_dummy = new node<T, S>(max->pair, max, nullptr, nullptr);
-      max->right = this->end_dummy;
-    }
+template <typename T>
+void set<T>::erase(typename set<T>::iterator pos) {
+  if (pos != nullptr) {
+    tree_.root_ =
+        AVLTree<T, T>::remove_node(AVLTree<T, T>::root_, pos.iterator_->key_);
   }
-  iterator it(this->end_dummy);
-  return it;
+  tree_.root_->size_--;
 }
 
-template <typename T, typename S>
-std::pair<typename set<T, S>::iterator, bool> set<T, S>::insert(
-    const key_type &key) {
-  value_type pair = std::make_pair(key, key);
-  return push(this->root_, pair);
+template <typename T>
+void set<T>::swap(set& other) {
+  tree_.Swap(other.tree_);
 }
 
-template <typename T, typename S>
-typename set<T, S>::iterator set<T, S>::find(const T &key) {
-  iterator it(this->find_pair(this->root_, key));
-  return it;
-}
-
-template <typename T, typename S>
-void set<T, S>::erase(iterator pos) {
-  this->remove(this->root_, pos.elem->pair);
-}
-
-template <typename T, typename S>
-void set<T, S>::merge(set &other) {
-  for (auto it = other.begin(); it != other.end(); ++it) {
-    insert(*it);
-  }
-}
-
-template <typename T, typename S>
-template <typename... Args>
-std::vector<std::pair<typename set<T, S>::iterator, bool>> set<T, S>::emplace(
-    Args &&...args) {
-  std::vector<std::pair<iterator, bool>> res;
-  for (auto &i : {args...}) res.push_back(insert(i));
-  return res;
-}
-
-template <typename T, typename S>
-std::pair<typename set<T, S>::iterator, bool> set<T, S>::push(
-    node<T, S> *(&knot), std::pair<T, S> value) {
-  std::pair<typename set<T, S>::iterator, bool> res;
-  if (knot == nullptr) {
-    knot = new node<T, S>(value, knot, nullptr, nullptr);
-    return std::pair<typename set<T, S>::iterator, bool>{knot, true};
-  } else if (value < knot->pair) {
-    if (knot->left == nullptr) {
-      node<T, S> *tmp = new node<T, S>(value, knot, nullptr, nullptr);
-      knot->left = tmp;
-      res = {tmp, true};
-    } else {
-      res = push(knot->left, value);
-    }
-    if ((this->height(knot->left) - this->height(knot->right)) > 1) {
-      if (this->height(knot->left->left) < this->height(knot->left->right))
-        this->turn_left(knot->left);
-      this->turn_right(knot);
-    }
-  } else if (value.first == knot->pair.first) {
-    return std::pair<typename set<T, S>::iterator, bool>{knot, false};
-  } else {
-    if (knot->right == nullptr) {
-      node<T, S> *tmp = new node<T, S>(value, knot, nullptr, nullptr);
-      knot->right = tmp;
-      res = {tmp, true};
-    } else {
-      res = push(knot->right, value);
-    }
-    if ((this->height(knot->right) - this->height(knot->left)) > 1) {
-      if (this->height(knot->right->right) < this->height(knot->right->left))
-        this->turn_right(knot->right);
-      this->turn_left(knot);
+template <typename T>
+void set<T>::merge(set<T>& other) {
+  if (this != &other) {
+    for (auto i = other.begin(); i != other.end(); i++) {
+      insert(*i);
     }
   }
-  return res;
+  other.clear();
 }
+
+template <typename T>
+bool set<T>::contains(const T& key) {
+  return tree_.search_for_set(key) != nullptr;
+}
+
+template <typename T>
+typename set<T>::iterator set<T>::find(const T& key) {
+  return iterator(tree_.search_for_set(key));
+}
+
+template <typename T>
+const AVLTree<typename set<T>::value_type, T>& set<T>::get_tree() const {
+  return tree_;
+}
+
+}  // namespace s21
 
 #endif  // CPP2_S21_CONTAINERS_1_SET_SET_CC_

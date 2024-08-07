@@ -1,89 +1,112 @@
-// #pragma
 #ifndef CPP2_S21_CONTAINERS_1_TREE_TREE_H_
 #define CPP2_S21_CONTAINERS_1_TREE_TREE_H_
 
 #include <iostream>
-#include <utility>
+#include <limits>
 
-namespace s21 {
-
-template <typename T, typename S>
-struct node {
+template <typename Key, typename T>
+class AVLTree {
  public:
-  std::pair<T, S> pair;
-  node<T, S> *parent = nullptr;
-  node<T, S> *left = nullptr;
-  node<T, S> *right = nullptr;
-  int flag = 0;
-  node(std::pair<T, S> two, node *p, node *l, node *r)
-      : pair(two), parent(p), left(l), right(r) {};
-  node() : parent(nullptr), left(nullptr), right(nullptr) {};
-};  // node
+  struct AVLTreeNode;
 
-template <typename T, typename S>
-class iterator_tree {
  public:
-  iterator_tree<T, S> &operator++();
-  iterator_tree<T, S> &operator--();
-  bool operator!=(const iterator_tree<T, S> &it) { return elem != it.elem; }
-  bool operator==(const iterator_tree<T, S> &it) { return elem == it.elem; }
-  node<T, S> *elem;
-};  // iterator_tree
+  class Iterator;
+  class ConstIterator;
 
-template <typename T, typename S>
-class iterator_map : public iterator_tree<T, S> {
+  using key_type = Key;
+  using value_type = T;
+  using reference = value_type &;
+  using const_reference = const value_type &;
+  using iterator = Iterator;
+  using const_iterator = ConstIterator;
+  using size_type = size_t;
+
+  class Iterator {
+    friend class AVLTree<Key, T>;
+
+   public:
+    Iterator();
+    Iterator(AVLTreeNode *node, AVLTreeNode *past_node = nullptr);
+    iterator &operator++();
+    iterator operator++(int);
+    iterator &operator--();
+    iterator operator--(int);
+    reference operator*();
+    bool operator==(const iterator &it);
+    AVLTreeNode &operator=(AVLTreeNode &other) noexcept;
+    friend class AVLTree<Key, T>;
+    bool operator!=(const iterator &it);
+    value_type &return_value();
+
+   public:
+    AVLTreeNode *iterator_;
+    AVLTreeNode *past_iterator_;
+    AVLTreeNode *move_forward(AVLTreeNode *node);
+    AVLTreeNode *move_back(AVLTreeNode *node);
+  };
+  class ConstIterator : public Iterator {
+   public:
+    ConstIterator() : Iterator() {};
+    const_reference operator*() const { return Iterator::operator*(); };
+  };
+
+  AVLTree();
+  ~AVLTree();
+  AVLTree(const AVLTree &other);
+  AVLTree(std::initializer_list<value_type> const &items);
+  AVLTreeNode *copy_tree(AVLTreeNode *node);
+  AVLTree &operator=(AVLTree &&other) noexcept;
+  AVLTree &operator=(const AVLTree &other);
+  iterator begin();
+  iterator end();
+  void clear();
+  std::pair<iterator, bool> insert(const Key &key, const T &obj);
+  std::pair<iterator, bool> insert_node(AVLTreeNode *node);
+  AVLTreeNode *remove_node(AVLTreeNode *node, Key key);
+  AVLTreeNode *get_root();
+  AVLTreeNode *search_for_set(Key key);
+  AVLTreeNode *search_node(AVLTreeNode *node, Key key);
+  bool get_inserted();
+  void Swap(AVLTree &other);
+  size_type size(AVLTreeNode *node);
+  size_type max_size();
+  void upper_size();
+
  public:
-  iterator_map() { this->elem = nullptr; }
-  iterator_map(node<T, S> *ref) { this->elem = ref; }
-  std::pair<T, S> &operator*() { return this->elem->pair; }
-};  // iterator_map
+  iterator find_key(const Key &key);
+  struct AVLTreeNode {
+    Key key_;
+    value_type value_;
+    AVLTreeNode *left_ = nullptr;
+    AVLTreeNode *right_ = nullptr;
+    AVLTreeNode *parent_ = nullptr;
+    int height_ = 0;
+    size_type size_ = 0;
+    AVLTreeNode(Key key, value_type value);
+    AVLTreeNode(Key key, value_type value, AVLTreeNode *parent);
+    friend class AVLTree<Key, T>;
+  };
+  bool inserted_ = false;
+  AVLTreeNode *root_;
 
-template <typename T, typename S>
-class iterator_set : public iterator_tree<T, S> {
- public:
-  iterator_set() { this->elem = nullptr; }
-  iterator_set(node<T, S> *ref) { this->elem = ref; }
-  T &operator*() { return this->elem->pair.first; }
-};  // iterator_set
+  void clear_node(AVLTreeNode *node);
 
-template <typename T, typename S>
-iterator_tree<T, S> &iterator_tree<T, S>::operator++() {
-  if (elem->right) {
-    elem = elem->right;
-    while (elem->left) {
-      elem = elem->left;
-    }
-  } else {
-    while (elem->parent) {
-      node<T, S> *tmp = elem;
-      elem = elem->parent;
-      if (tmp->pair <= elem->pair) {
-        if (tmp != elem->right) {
-          return *this;  // условие для мультисета
-        }
-      }
-    }
-  }
-  elem->flag = 1;
-  return *this;
-}
+  void swap_value(AVLTreeNode *a, AVLTreeNode *b);
+  void right_rotation(AVLTreeNode *node);
+  void left_rotation(AVLTreeNode *node);
+  void balance(AVLTreeNode *node);
+  int balance_factor(AVLTreeNode *node);
+  int height(AVLTreeNode *node);
+  void fix_height(AVLTreeNode *node);
 
-template <typename T, typename S>
-iterator_tree<T, S> &iterator_tree<T, S>::operator--() {
-  if (elem->left) {
-    elem = elem->left;
-    while (elem->right) {
-      elem = elem->right;
-    }
-  } else {
-    std::pair<T, S> tmp = elem->pair;
-    while (elem->parent) {
-      elem = elem->parent;
-      if (tmp >= elem->pair) return *this;
-    }
-  }
-  return *this;
-}
+  static AVLTreeNode *min_node(AVLTreeNode *node);
+  static AVLTreeNode *max_node(AVLTreeNode *node);
 
-}  // namespace s21
-#endif  //  CPP2_S21_CONTAINERS_1_TREE_TREE_H_
+  bool insert_with_balance(AVLTreeNode *node, const Key &key,
+                           const value_type &value);
+  AVLTreeNode *recurs_find(AVLTreeNode *node, const Key &key);
+};
+
+#include "./tree.cc"
+
+#endif  // CPP2_S21_CONTAINERS_1_TREE_TREE_H_
