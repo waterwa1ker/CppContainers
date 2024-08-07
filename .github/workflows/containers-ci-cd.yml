@@ -32,5 +32,17 @@ jobs:
           clang-format-version: '11'
           check-path: 'src'
           fallback-style: 'Google'
+  test:
+      needs: [style]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Get Google Test
+          uses: LazyPanda07/get-gtest@v1.1
+        - name: Test
+          run: | 
+            cd src
+            make test
 
 
