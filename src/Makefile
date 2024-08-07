@@ -35,13 +35,15 @@ gcov_report: test
 valgrind: clean test
 	clear
 	valgrind --tool=memcheck --leak-check=yes ./$(TEST_EXECUTE)
-
-
+	
 con:
 	sh docker/run.sh
 
 format:
 	clang-format -style=google -i $(TEST_SOURCES) $(SOURCES)
+
+check:
+	clang-format -style=google -n $(TEST_SOURCES) $(SOURCES)
 
 clean:
 	rm -rf *.o *.a *.gcda *.gcno report gcov_test.info documentation $(TEST_EXECUTE)

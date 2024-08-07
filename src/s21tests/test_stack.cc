@@ -1,7 +1,8 @@
+#include <gtest/gtest.h>
+
 #include <stack>
 
 #include "../containers/stack/stack.h"
-#include "gtest/gtest.h"
 
 TEST(stack_default_constructor_suite, int_true_test) {
   s21::stack<int> s21_a;
