@@ -27,10 +27,14 @@ dvi:
 	doxygen
 	open documentation/html/index.html
 
-gcov_report: test
-	lcov -o gcov_test.info $(GCOV_FLAG) -c -d .
-	genhtml -o report/ gcov_test.info
-	open ./report/index.html
+# report: 
+# 	gcc -fPIC -fprofile-arcs -ftest-coverage -c -Wall -Werror $(SOURCES)
+# 	ar rcs $(LIB_NAME) *.o
+# 	gcc -fPIC -fprofile-arcs -ftest-coverage  -Wall -Werror -o T $(LIB_NAME) $(TEST_SOURCES) 
+# 	./T
+# 	lcov --capture --directory . --output-file coverage.info
+# 	genhtml coverage.info --output-directory out
+
 
 valgrind: clean test
 	clear
